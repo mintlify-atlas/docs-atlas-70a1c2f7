@@ -1,0 +1,240 @@
+---
+title: Doping
+description: How adding impurity atoms transforms semiconductor properties and creates N-type and P-type materials
+---
+
+## What is doping?
+
+**Doping** is the intentional introduction of impurity atoms into a pure semiconductor to modify its electrical properties. This process is fundamental to creating functional electronic devices like transistors, diodes, and solar cells.
+
+By carefully selecting dopant elements based on their valence electron count, we can control whether the semiconductor gains excess electrons (N-type) or holes (P-type).
+
+## Why doping matters
+
+Pure (intrinsic) semiconductors have limited conductivity because:
+- Very few free charge carriers exist at room temperature
+- Electrons and holes are created only through thermal excitation
+- Conductivity is too low for most practical applications
+
+Doping solves this by:
+- Adding controlled amounts of charge carriers
+- Increasing conductivity by several orders of magnitude
+- Allowing precise control of electrical properties
+- Enabling the creation of p-n junctions for diodes and transistors
+
+## The doping process
+
+### Host materials
+
+The most common semiconductor host materials have **4 valence electrons**:
+- **Silicon (Si, Z=14)** — Most widely used in electronics
+- **Germanium (Ge, Z=32)** — Used in specialized applications
+
+<Info>
+Silicon dominates the semiconductor industry because it forms stable oxide layers, is abundant, and operates well at room temperature.
+</Info>
+
+### Dopant selection
+
+Dopants are chosen from adjacent groups in the periodic table:
+
+<Tabs>
+  <Tab title="N-type dopants (Group 15)">
+    **Valence electrons:** 5
+    
+    **Common elements:**
+    - **Phosphorus (P, Z=15)** — Most common for silicon
+    - **Arsenic (As, Z=33)** — Alternative for silicon
+    - **Antimony (Sb, Z=51)** — Used in some applications
+    
+    **Effect:** Each dopant atom contributes one free electron
+  </Tab>
+  
+  <Tab title="P-type dopants (Group 13)">
+    **Valence electrons:** 3
+    
+    **Common elements:**
+    - **Boron (B, Z=5)** — Most common for silicon
+    - **Aluminum (Al, Z=13)** — Alternative dopant
+    - **Gallium (Ga, Z=31)** — Used in compound semiconductors
+    
+    **Effect:** Each dopant atom creates one hole
+  </Tab>
+</Tabs>
+
+## How doping works
+
+### N-type doping (donor atoms)
+
+When a 5-valence-electron dopant replaces a 4-valence-electron host atom:
+
+1. Four electrons form covalent bonds with neighboring atoms
+2. The fifth electron is loosely bound to the dopant atom
+3. At room temperature, this electron breaks free and becomes a mobile charge carrier
+4. The dopant atom becomes a positively charged ion fixed in the lattice
+
+**Example: Silicon + Phosphorus**
+
+```javascript
+// Silicon: 1s² 2s² 2p⁶ 3s² 3p² (4 valence electrons)
+const silicon = getElementData(14);
+console.log(silicon.valenceElectrons); // 4
+
+// Phosphorus: 1s² 2s² 2p⁶ 3s² 3p³ (5 valence electrons)
+const phosphorus = getElementData(15);
+console.log(phosphorus.valenceElectrons); // 5
+
+// Determine material type
+const material = determineMaterial(silicon, phosphorus);
+console.log(material); // "Tipo N (Exceso de electrones)"
+```
+
+<Note>
+The extra electron requires very little energy (~0.045 eV for P in Si) to break free, so nearly all dopant atoms contribute free electrons at room temperature.
+</Note>
+
+### P-type doping (acceptor atoms)
+
+When a 3-valence-electron dopant replaces a 4-valence-electron host atom:
+
+1. Three electrons form covalent bonds with neighbors
+2. One bond remains incomplete, creating a "hole"
+3. Electrons from neighboring atoms can jump into this hole
+4. The hole effectively moves through the lattice as a positive charge carrier
+5. The dopant atom becomes a negatively charged ion fixed in the lattice
+
+**Example: Silicon + Boron**
+
+```javascript
+// Silicon: 4 valence electrons
+const silicon = getElementData(14);
+
+// Boron: 1s² 2s² 2p¹ (3 valence electrons)
+const boron = getElementData(5);
+console.log(boron.valenceElectrons); // 3
+
+// Determine material type
+const material = determineMaterial(silicon, boron);
+console.log(material); // "Tipo P (Exceso de huecos)"
+```
+
+## Doping concentration
+
+The amount of dopant determines the semiconductor's electrical properties:
+
+| Doping level | Dopant atoms per cm³ | Typical use |
+|--------------|---------------------|-------------|
+| **Light** | 10¹⁴ - 10¹⁶ | High-resistance regions |
+| **Moderate** | 10¹⁶ - 10¹⁸ | Active device regions |
+| **Heavy** | 10¹⁸ - 10²⁰ | Low-resistance contacts |
+
+<Info>
+Even "heavy" doping means only ~1 in 10,000 atoms is a dopant. The vast majority of the crystal remains pure host material.
+</Info>
+
+## Compensated semiconductors
+
+What happens when a material contains both N-type and P-type dopants?
+
+- The dopant types partially cancel each other
+- The net type depends on which dopant is more concentrated
+- If N-dopants > P-dopants → N-type (net excess electrons)
+- If P-dopants > N-dopants → P-type (net excess holes)
+- If equal concentrations → Behaves like intrinsic semiconductor
+
+<Warning>
+SemiCode Analyzer assumes pure single-dopant scenarios. Real-world semiconductors often involve multiple dopants and require more complex analysis.
+</Warning>
+
+## Visualizing doping effects
+
+SemiCode Analyzer shows doping effects through multiple visualizations:
+
+### Crystal lattice view
+
+- **Host atoms** (Si) appear in **blue**
+- **Dopant atoms** appear in **orange**
+- **N-type:** Red pulsing circle (e⁻) shows free electron
+- **P-type:** Hollow dashed circle (h⁺) shows hole
+
+### Energy band diagram
+
+- **Intrinsic:** Fermi level at midgap (50%)
+- **N-type:** Fermi level near conduction band (25%)
+- **P-type:** Fermi level near valence band (75%)
+
+The Fermi level position indicates where electrons are most likely to be found and determines the material's electrical behavior.
+
+## Real-world applications
+
+### Diodes (p-n junction)
+
+Combining P-type and N-type regions creates a diode:
+- Current flows easily in one direction (forward bias)
+- Current is blocked in the opposite direction (reverse bias)
+- Used in power supplies, signal detection, and LED lights
+
+### Transistors
+
+Stacking regions (e.g., N-P-N or P-N-P) creates transistors:
+- Control large currents with small signals
+- Act as switches or amplifiers
+- Foundation of modern computing and electronics
+
+### Solar cells
+
+P-n junctions convert light to electricity:
+- Photons create electron-hole pairs
+- Built-in electric field separates charges
+- Generates electrical current from sunlight
+
+## Testing with SemiCode Analyzer
+
+Try these combinations to understand doping:
+
+<Accordion title="Silicon doping examples">
+  **N-type:**
+  - Si (14) + P (15)
+  - Si (14) + As (33)
+  - Si (14) + Sb (51)
+  
+  **P-type:**
+  - Si (14) + B (5)
+  - Si (14) + Al (13)
+  - Si (14) + Ga (31)
+  
+  **Intrinsic:**
+  - Si (14) + Si (14)
+  - Si (14) + Ge (32)
+</Accordion>
+
+<Accordion title="Germanium doping examples">
+  **N-type:**
+  - Ge (32) + P (15)
+  - Ge (32) + As (33)
+  
+  **P-type:**
+  - Ge (32) + B (5)
+  - Ge (32) + Al (13)
+  
+  **Intrinsic:**
+  - Ge (32) + Ge (32)
+  - Ge (32) + Si (14)
+</Accordion>
+
+## Related concepts
+
+<CardGroup cols={2}>
+  <Card title="Semiconductor types" icon="microchip" href="/concepts/semiconductor-types">
+    Learn how N-type and P-type materials differ in properties
+  </Card>
+  <Card title="Electronic configuration" icon="atom-simple" href="/concepts/electronic-configuration">
+    Understand how valence electrons determine doping behavior
+  </Card>
+  <Card title="Crystal lattice" icon="grid" href="/features/crystal-lattice">
+    See visual representation of dopants in the crystal structure
+  </Card>
+  <Card title="Examples" icon="flask" href="/resources/examples">
+    Explore more doping combinations and their outputs
+  </Card>
+</CardGroup>

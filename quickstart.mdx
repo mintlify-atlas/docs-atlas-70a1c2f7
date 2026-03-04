@@ -1,80 +1,212 @@
 ---
-title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+title: Quickstart
+description: Get SemiCode Analyzer running locally in under 5 minutes
 ---
 
-## Get started in three steps
+This guide walks you through setting up SemiCode Analyzer on your local machine and running your first semiconductor analysis.
 
-Get your documentation site running locally and make your first customization.
+## Prerequisites
 
-### Step 1: Set up your local environment
+Before you begin, ensure you have:
 
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
-    
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
-    
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
+- **Node.js** 18.x or higher installed
+- **npm** package manager (comes with Node.js)
+- **Git** for cloning the repository
+- A modern web browser (Chrome, Firefox, Safari, or Edge)
 
-### Step 2: Deploy your changes
+## Installation
 
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
-    
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+<Steps>
+  <Step title="Clone the repository">
+    Clone the SemiCode Analyzer repository to your local machine:
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+    ```bash
+    git clone https://github.com/Bryborj/SemiCode_Analyzer.git
+    ```
+  </Step>
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
+  <Step title="Navigate to the project directory">
+    Change into the project folder:
 
-### Step 3: Go live
+    ```bash
+    cd SemiCode_Analyzer
+    ```
+  </Step>
 
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
+  <Step title="Install dependencies">
+    Install all required npm packages:
+
+    ```bash
+    npm install
+    ```
+
+    This will install:
+    - Astro 5.17.1
+    - Tailwind CSS 4.1.18
+    - @tailwindcss/vite 4.1.18
+  </Step>
+
+  <Step title="Start the development server">
+    Launch the Astro development server:
+
+    ```bash
+    npm run dev
+    ```
+
+    The server will start on port 4321 by default.
+  </Step>
+
+  <Step title="Open the application">
+    Navigate to the application in your browser:
+
+    ```
+    http://localhost:4321/
+    ```
+
+    You should see the SemiCode Analyzer interface with input fields for atomic numbers.
+  </Step>
+</Steps>
+
+<Note>
+If port 4321 is already in use, Astro will automatically select the next available port. Check your terminal output for the actual URL.
+</Note>
+
+## Running your first analysis
+
+Once the application is running, you can analyze semiconductor combinations:
+
+<Steps>
+  <Step title="Enter the host element atomic number">
+    In the **"Número Atómico Elemento A (Host)"** field, enter an atomic number. For example:
+
+    - Enter `14` for Silicon (Si)
+
+    Silicon is the most common semiconductor material with 4 valence electrons.
+  </Step>
+
+  <Step title="Enter the dopant element atomic number">
+    In the **"Número Atómico Elemento B (Dopante)"** field, enter a dopant atomic number:
+
+    - Enter `13` for Aluminum (Al) to create a P-type semiconductor
+    - Or enter `15` for Phosphorus (P) to create an N-type semiconductor
+  </Step>
+
+  <Step title="Calculate the material type">
+    Click the **"Calcular Material"** button.
+
+    The application will:
+    1. Calculate electronic configurations for both elements
+    2. Determine valence electrons for each element
+    3. Classify the resulting semiconductor type
+    4. Display the material type (Intrinsic, N-type, or P-type)
+  </Step>
+
+  <Step title="Explore the visualizations">
+    Scroll down to view:
+
+    - **Atomic diagrams**: Visual representation of electron shells for both elements
+    - **Energy band diagram**: Shows the Fermi level position relative to conduction and valence bands
+    - **Crystal lattice structure**: 3x3 grid showing the dopant atom integrated into the host crystal with free electrons (e-) or holes (h+) marked
+  </Step>
+</Steps>
+
+## Example combinations
+
+Try these common semiconductor combinations:
+
+### N-type semiconductor (excess electrons)
+
+```bash
+Host: 14 (Silicon, Si)
+Dopant: 15 (Phosphorus, P)
+Result: Tipo N (Exceso de electrones)
+```
+
+Phosphorus has 5 valence electrons. When it replaces a Silicon atom (4 valence electrons), one extra electron becomes a free charge carrier.
+
+### P-type semiconductor (excess holes)
+
+```bash
+Host: 14 (Silicon, Si)
+Dopant: 13 (Aluminum, Al)
+Result: Tipo P (Exceso de huecos)
+```
+
+Aluminum has 3 valence electrons. When it replaces a Silicon atom, it creates a "hole" — a missing electron that acts as a positive charge carrier.
+
+### Intrinsic semiconductor
+
+```bash
+Host: 14 (Silicon, Si)
+Dopant: 32 (Germanium, Ge)
+Result: Intrínseco (Aislante)
+```
+
+Both Silicon and Germanium have 4 valence electrons, so no doping occurs.
+
+<Warning>
+The application expects atomic numbers between 1 and 118. Entering invalid values will trigger a browser alert.
+</Warning>
+
+## Understanding the output
+
+The results display includes:
+
+### Electronic configuration
+
+For Silicon (Z=14):
+```
+1s2 2s2 2p6 3s2 3p2 (4 e- valencia)
+```
+
+This notation shows how electrons fill orbitals following the Aufbau principle. The "4 e- valencia" indicates 4 electrons in the outermost shell (3s² 3p²).
+
+### Material classification
+
+The application determines material type based on valence electron differences:
+
+```javascript ~/workspace/source/src/utils/chemistry.js
+export const determineMaterial = (el1, el2) => {
+  const v1 = el1.valenceElectrons;
+  const v2 = el2.valenceElectrons;
+
+  if (v1 === 4 && v2 === 4) return "Intrínseco (Aislante)";
+  if ((v1 === 4 && v2 === 5) || (v1 === 5 && v2 === 4)) return "Tipo N (Exceso de electrones)";
+  if ((v1 === 4 && v2 === 3) || (v1 === 3 && v2 === 4)) return "Tipo P (Exceso de huecos)";
+  return "Ninguno de los anteriores";
+};
+```
 
 ## Next steps
 
-Now that you have your docs running, explore these key features:
+Now that you have SemiCode Analyzer running:
 
-<CardGroup cols={2}>
+- Experiment with different element combinations
+- Study how valence electrons affect semiconductor behavior
+- Observe how the Fermi level shifts in the energy band diagram
+- Examine the crystal lattice visualization to understand doping at the atomic level
 
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
+## Troubleshooting
 
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
+### Port already in use
 
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
+If you see an error about port 4321 being in use:
 
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
+```bash
+npm run dev -- --port 3000
+```
 
-</CardGroup>
+This starts the server on port 3000 instead.
 
-<Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
-</Note>
+### Module not found errors
+
+Ensure all dependencies are installed:
+
+```bash
+rm -rf node_modules package-lock.json
+npm install
+```
+
+### Periodic table data not loading
+
+Verify that `public/periodicTable.json` exists in the project root. This file contains element data required for displaying element names and symbols.

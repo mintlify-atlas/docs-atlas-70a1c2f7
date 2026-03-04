@@ -1,0 +1,173 @@
+---
+title: Crystal lattice visualization
+description: Display semiconductor crystal structures with dopant atoms, free electrons, and holes in a 3x3 grid
+---
+
+The crystal lattice renderer creates visual representations of semiconductor materials showing how dopant atoms integrate into the host crystal structure.
+
+## Lattice grid structure
+
+The `renderLattice()` function generates a 3×3 grid of atoms with the dopant positioned at the center:
+
+```javascript visualizers.js
+const gridSize = 3;
+const atoms = [];
+
+const centerIndex = Math.floor((gridSize * gridSize) / 2);
+
+for (let i = 0; i < gridSize * gridSize; i++) {
+  const isDopant = (materialType !== "Intrínseco (Aislante)" && i === centerIndex);
+  const z = isDopant ? dopantZ : hostZ;
+  atoms.push({ z, isDopant });
+}
+```
+
+### Grid positioning
+
+Atoms are positioned using a uniform spacing system:
+
+```javascript visualizers.js
+const spacing = 100;
+const offsetX = 50;
+const offsetY = 50;
+const totalWidth = spacing * gridSize;
+const totalHeight = spacing * gridSize;
+```
+
+Each atom is placed at:
+- **X coordinate**: `offsetX + column * 100`
+- **Y coordinate**: `offsetY + row * 100`
+
+This creates a regular lattice with 100-unit spacing between adjacent atoms.
+
+<Note>
+The center position (index 4 in a 9-atom grid) is reserved for the dopant atom when the material is not intrinsic.
+</Note>
+
+## Lattice bonds rendering
+
+Covalent bonds are drawn as lines connecting adjacent atoms:
+
+### Horizontal bonds
+
+```javascript visualizers.js
+for (let row = 0; row < gridSize; row++) {
+  for (let col = 0; col < gridSize - 1; col++) {
+    svgContent += `<line x1="${offsetX + col * spacing}" y1="${offsetY + row * spacing}" 
+                        x2="${offsetX + (col + 1) * spacing}" y2="${offsetY + row * spacing}" 
+                        class="stroke-slate-400 stroke-2" />`;
+  }
+}
+```
+
+### Vertical bonds
+
+```javascript visualizers.js
+for (let row = 0; row < gridSize - 1; row++) {
+  for (let col = 0; col < gridSize; col++) {
+    svgContent += `<line x1="${offsetX + col * spacing}" y1="${offsetY + row * spacing}" 
+                        x2="${offsetX + col * spacing}" y2="${offsetY + (row + 1) * spacing}" 
+                        class="stroke-slate-400 stroke-2" />`;
+  }
+}
+```
+
+Bonds are rendered before atoms to ensure proper layering in the final SVG output.
+
+## Atom visualization
+
+Atoms in the lattice are rendered with different styling based on whether they're host or dopant:
+
+```javascript visualizers.js
+const colorClass = atom.isDopant ? "fill-orange-200 stroke-orange-500" : "fill-blue-100 stroke-blue-400";
+const textClass = atom.isDopant ? "fill-orange-900" : "fill-blue-900";
+const label = atom.isDopant ? "D" : "Si";
+
+svgContent += `
+  <circle cx="${x}" cy="${y}" r="25" class="${colorClass} stroke-2" />
+  <text x="${x}" y="${y + 5}" text-anchor="middle" class="${textClass} text-xs font-bold pointer-events-none">${atom.z}</text>
+`;
+```
+
+<CodeGroup>
+```javascript Host atom (Silicon)
+<circle r="25" class="fill-blue-100 stroke-blue-400 stroke-2" />
+<text class="fill-blue-900 text-xs font-bold">{atomicNumber}</text>
+```
+
+```javascript Dopant atom
+<circle r="25" class="fill-orange-200 stroke-orange-500 stroke-2" />
+<text class="fill-orange-900 text-xs font-bold">{atomicNumber}</text>
+```
+</CodeGroup>
+
+## Free carriers visualization
+
+The renderer shows charge carriers differently based on material type:
+
+### N-type semiconductors (electron donors)
+
+```javascript visualizers.js
+if (materialType.includes("Tipo N")) {
+  svgContent += `<circle cx="${x + 20}" cy="${y - 20}" r="4" class="fill-red-500 animate-pulse" />`;
+  svgContent += `<text x="${x + 30}" y="${y - 25}" class="text-[8px] fill-red-600">e-</text>`;
+}
+```
+
+Free electrons appear as small pulsing red circles labeled "e-" positioned near the dopant atom.
+
+### P-type semiconductors (hole donors)
+
+```javascript visualizers.js
+else if (materialType.includes("Tipo P")) {
+  svgContent += `<circle cx="${x + 35}" cy="${y}" r="5" class="fill-white stroke-red-500 stroke-1 border-dashed" />`;
+  svgContent += `<text x="${x + 35}" y="${y + 15}" class="text-[8px] fill-red-600 text-center" text-anchor="middle">h+</text>`;
+}
+```
+
+Holes are represented as hollow circles with dashed borders labeled "h+" to indicate missing electrons.
+
+<Tip>
+The `animate-pulse` class on free electrons creates a visual effect emphasizing their mobility in the conduction band.
+</Tip>
+
+## Dopant positioning logic
+
+Dopant atoms are only shown when the material is doped:
+
+```javascript visualizers.js
+const isDopant = (materialType !== "Intrínseco (Aislante)" && i === centerIndex);
+```
+
+For intrinsic materials (pure silicon), all atoms in the grid are identical host atoms with no dopant present.
+
+## Material type descriptions
+
+The renderer includes contextual labels explaining the lattice structure:
+
+```javascript visualizers.js
+<p class="text-xs text-center text-slate-500 mt-2">
+  ${materialType.includes("Tipo N") ? "Átomo donador con electrón libre" : 
+    materialType.includes("Tipo P") ? "Átomo aceptor con hueco (enlace incompleto)" : 
+    "Red cristalina perfecta (Silicio puro)"}
+</p>
+```
+
+These descriptions clarify the physical meaning of the visualization:
+- **N-type**: Donor atom with free electron
+- **P-type**: Acceptor atom with hole (incomplete bond)
+- **Intrinsic**: Perfect crystal lattice (pure silicon)
+
+## Integration example
+
+The lattice visualization is invoked after material type determination:
+
+```javascript index.astro
+renderLattice("latticeVisual", z1, z2, material);
+```
+
+Parameters:
+- `containerId` — Target DOM element ID
+- `hostZ` — Atomic number of host material (e.g., 14 for Si)
+- `dopantZ` — Atomic number of dopant (e.g., 15 for P, 13 for Al)
+- `materialType` — Classification string ("Tipo N", "Tipo P", or "Intrínseco")

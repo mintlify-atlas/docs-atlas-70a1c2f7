@@ -1,0 +1,133 @@
+---
+title: Electronic configuration
+description: Understanding how electrons fill atomic orbitals and determine chemical properties
+---
+
+## What is electronic configuration?
+
+Electronic configuration describes how electrons are distributed among the atomic orbitals of an element. This distribution follows the **Aufbau principle**, which states that electrons fill orbitals in order of increasing energy.
+
+The electron configuration determines an element's chemical properties, reactivity, and behavior—especially its **valence electrons**, which participate in chemical bonding.
+
+## The Aufbau principle
+
+Electrons fill orbitals in a specific sequence based on energy levels. SemiCode Analyzer implements this using the following orbital sequence:
+
+```javascript
+const sequence = [
+  { n: "1s", max: 2 }, { n: "2s", max: 2 }, { n: "2p", max: 6 },
+  { n: "3s", max: 2 }, { n: "3p", max: 6 }, { n: "4s", max: 2 },
+  { n: "3d", max: 10 }, { n: "4p", max: 6 }, { n: "5s", max: 2 },
+  { n: "4d", max: 10 }, { n: "5p", max: 6 }, { n: "6s", max: 2 },
+  { n: "4f", max: 14 }, { n: "5d", max: 10 }, { n: "6p", max: 6 },
+  { n: "7s", max: 2 }, { n: "5f", max: 14 }, { n: "6d", max: 10 },
+  { n: "7p", max: 6 }
+];
+```
+
+<Info>
+Notice that the filling order doesn't always follow numerical order. For example, **4s** fills before **3d** because it has lower energy.
+</Info>
+
+## Orbital capacity
+
+Each type of orbital can hold a maximum number of electrons:
+
+| Orbital Type | Maximum Electrons |
+|--------------|------------------|
+| s | 2 |
+| p | 6 |
+| d | 10 |
+| f | 14 |
+
+These limits reflect the quantum mechanical properties of atomic orbitals and Pauli's exclusion principle.
+
+## Valence electrons
+
+Valence electrons are the electrons in the outermost energy level (highest principal quantum number). These electrons determine an element's chemical behavior and bonding characteristics.
+
+SemiCode Analyzer calculates valence electrons by tracking the highest energy level:
+
+```javascript
+let currentLevel = parseInt(sub.n[0]);
+if (currentLevel > lastLevel) {
+  lastLevel = currentLevel;
+  valenceElectrons = count;
+} else if (currentLevel === lastLevel) {
+  valenceElectrons += count;
+}
+```
+
+### Example: Silicon (Z=14)
+
+Silicon has 14 electrons distributed as:
+- **1s² 2s² 2p⁶ 3s² 3p²**
+- The highest energy level is **n=3** with 4 electrons (2 in 3s, 2 in 3p)
+- Therefore, Silicon has **4 valence electrons**
+
+<Note>
+Elements with 4 valence electrons like Silicon and Germanium are ideal semiconductors because they form stable covalent bonds but can be easily modified through doping.
+</Note>
+
+## Examples
+
+<Tabs>
+  <Tab title="Silicon (14)">
+    **Electronic configuration:** 1s² 2s² 2p⁶ 3s² 3p²
+    
+    **Valence electrons:** 4 (in level 3)
+    
+    **Significance:** Pure semiconductor with complete tetrahedral bonding structure
+  </Tab>
+  
+  <Tab title="Phosphorus (15)">
+    **Electronic configuration:** 1s² 2s² 2p⁶ 3s² 3p³
+    
+    **Valence electrons:** 5 (in level 3)
+    
+    **Significance:** Common N-type dopant with one extra electron
+  </Tab>
+  
+  <Tab title="Boron (5)">
+    **Electronic configuration:** 1s² 2s² 2p¹
+    
+    **Valence electrons:** 3 (in level 2)
+    
+    **Significance:** Common P-type dopant with one fewer electron
+  </Tab>
+  
+  <Tab title="Aluminum (13)">
+    **Electronic configuration:** 1s² 2s² 2p⁶ 3s² 3p¹
+    
+    **Valence electrons:** 3 (in level 3)
+    
+    **Significance:** Alternative P-type dopant
+  </Tab>
+</Tabs>
+
+## Energy level distribution
+
+Beyond valence electrons, you can examine the complete distribution across all energy levels using `getElectronsPerLevel(z)`:
+
+```javascript
+// For Silicon (Z=14)
+const levels = getElectronsPerLevel(14);
+// Returns: { 1: 2, 2: 8, 3: 4, 4: 0, 5: 0, 6: 0, 7: 0 }
+```
+
+This shows:
+- Level 1: 2 electrons (1s²)
+- Level 2: 8 electrons (2s² 2p⁶)
+- Level 3: 4 electrons (3s² 3p²)
+- Levels 4-7: empty
+
+## Related concepts
+
+<CardGroup cols={2}>
+  <Card title="Semiconductor types" icon="microchip" href="/concepts/semiconductor-types">
+    Learn how valence electrons determine semiconductor classification
+  </Card>
+  <Card title="Doping" icon="flask" href="/concepts/doping">
+    Discover how adding elements with different valence counts modifies properties
+  </Card>
+</CardGroup>

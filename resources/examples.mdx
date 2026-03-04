@@ -1,0 +1,471 @@
+---
+title: Semiconductor examples
+description: Real-world examples of semiconductor doping calculations and their expected outputs
+---
+
+## Overview
+
+This page provides concrete examples of semiconductor analysis using SemiCode Analyzer. Each example shows the input values, electron configurations, valence electron calculations, and resulting material types.
+
+## How semiconductor doping works
+
+Semiconductor doping involves introducing impurity atoms into a pure semiconductor crystal to modify its electrical properties:
+
+- **Host material:** Typically has 4 valence electrons (Group 14: Si, Ge)
+- **N-type dopant:** Has 5 valence electrons (Group 15: P, As, Sb) - provides excess electrons
+- **P-type dopant:** Has 3 valence electrons (Group 13: B, Al, Ga) - creates holes
+- **Intrinsic:** Same material or materials with matching valence electrons
+
+## Silicon-based examples
+
+Silicon (Si, atomic number 14) is the most common semiconductor material in electronics.
+
+<Tabs>
+  <Tab title="N-type doping">
+    ### Silicon + Phosphorus → N-type semiconductor
+
+    **Input:**
+    - Element A (Host): 14 (Silicon)
+    - Element B (Dopant): 15 (Phosphorus)
+
+    **Electron configurations:**
+
+    **Silicon (Si):**
+    ```
+    Atomic number: 14
+    Configuration: 1s2 2s2 2p6 3s2 3p2
+    Valence electrons: 4
+    Holes: 4
+    ```
+
+    **Phosphorus (P):**
+    ```
+    Atomic number: 15
+    Configuration: 1s2 2s2 2p6 3s2 3p3
+    Valence electrons: 5
+    Holes: 3
+    ```
+
+    **Result:**
+    ```
+    Material Type: Tipo N (Exceso de electrones)
+    ```
+
+    **Explanation:**
+    Phosphorus has 5 valence electrons. When it replaces a silicon atom in the crystal lattice, 4 electrons form covalent bonds with neighboring silicon atoms. The 5th electron is loosely bound and becomes a free charge carrier, creating an N-type (negative) semiconductor with excess electrons.
+
+    **Energy band diagram:**
+    - Fermi level shifts closer to the conduction band
+    - Increased electron density in conduction band
+    - Donor energy level just below conduction band
+
+    **Applications:**
+    - N-type region in diodes and transistors
+    - Solar cell contacts
+    - Integrated circuit components
+  </Tab>
+
+  <Tab title="P-type doping">
+    ### Silicon + Boron → P-type semiconductor
+
+    **Input:**
+    - Element A (Host): 14 (Silicon)
+    - Element B (Dopant): 5 (Boron)
+
+    **Electron configurations:**
+
+    **Silicon (Si):**
+    ```
+    Atomic number: 14
+    Configuration: 1s2 2s2 2p6 3s2 3p2
+    Valence electrons: 4
+    Holes: 4
+    ```
+
+    **Boron (B):**
+    ```
+    Atomic number: 5
+    Configuration: 1s2 2s2 2p1
+    Valence electrons: 3
+    Holes: 5
+    ```
+
+    **Result:**
+    ```
+    Material Type: Tipo P (Exceso de huecos)
+    ```
+
+    **Explanation:**
+    Boron has only 3 valence electrons. When it replaces a silicon atom, it forms only 3 covalent bonds, leaving one bond incomplete. This creates a "hole" (absence of an electron) that acts as a positive charge carrier, creating a P-type (positive) semiconductor with excess holes.
+
+    **Energy band diagram:**
+    - Fermi level shifts closer to the valence band
+    - Increased hole density in valence band
+    - Acceptor energy level just above valence band
+
+    **Applications:**
+    - P-type region in diodes and transistors
+    - CMOS technology
+    - Power electronics
+  </Tab>
+
+  <Tab title="Intrinsic">
+    ### Silicon + Silicon → Intrinsic semiconductor
+
+    **Input:**
+    - Element A (Host): 14 (Silicon)
+    - Element B (Dopant): 14 (Silicon)
+
+    **Electron configurations:**
+
+    **Silicon (Si) - Host:**
+    ```
+    Atomic number: 14
+    Configuration: 1s2 2s2 2p6 3s2 3p2
+    Valence electrons: 4
+    Holes: 4
+    ```
+
+    **Silicon (Si) - Dopant:**
+    ```
+    Atomic number: 14
+    Configuration: 1s2 2s2 2p6 3s2 3p2
+    Valence electrons: 4
+    Holes: 4
+    ```
+
+    **Result:**
+    ```
+    Material Type: Intrínseco (Aislante)
+    ```
+
+    **Explanation:**
+    When both elements have 4 valence electrons, no excess carriers are introduced. The material remains intrinsic (pure) with equal numbers of electrons and holes generated through thermal excitation. This configuration provides high resistance and is considered an insulator at room temperature.
+
+    **Energy band diagram:**
+    - Fermi level in the middle of the band gap
+    - Equal electron and hole concentrations
+    - Large band gap (1.12 eV for Si at 300K)
+
+    **Applications:**
+    - Substrate material for semiconductor devices
+    - Starting material before doping
+    - Isolation regions in integrated circuits
+  </Tab>
+
+  <Tab title="Aluminium doping">
+    ### Silicon + Aluminium → P-type semiconductor
+
+    **Input:**
+    - Element A (Host): 14 (Silicon)
+    - Element B (Dopant): 13 (Aluminium)
+
+    **Electron configurations:**
+
+    **Silicon (Si):**
+    ```
+    Atomic number: 14
+    Configuration: 1s2 2s2 2p6 3s2 3p2
+    Valence electrons: 4
+    Holes: 4
+    ```
+
+    **Aluminium (Al):**
+    ```
+    Atomic number: 13
+    Configuration: 1s2 2s2 2p6 3s2 3p1
+    Valence electrons: 3
+    Holes: 5
+    ```
+
+    **Result:**
+    ```
+    Material Type: Tipo P (Exceso de huecos)
+    ```
+
+    **Explanation:**
+    Like boron, aluminium has 3 valence electrons and acts as a P-type dopant. Aluminium is commonly mentioned in the project README as an example dopant. It creates holes in the silicon lattice, producing a P-type semiconductor.
+
+    **Comparison with Boron:**
+    - Both create P-type semiconductors
+    - Boron: Smaller atomic radius, easier diffusion
+    - Aluminium: Larger atomic radius, different diffusion characteristics
+    - Boron is more commonly used in modern silicon processing
+
+    **Applications:**
+    - Alternative P-type dopant
+    - Specific metallization processes
+    - Legacy semiconductor processes
+  </Tab>
+</Tabs>
+
+## Germanium-based examples
+
+Germanium (Ge, atomic number 32) was the first widely used semiconductor material.
+
+<Accordion>
+  <AccordionGroup>
+    <Accordion title="Germanium + Phosphorus → N-type">
+      **Input:**
+      - Element A (Host): 32 (Germanium)
+      - Element B (Dopant): 15 (Phosphorus)
+
+      **Electron configurations:**
+
+      **Germanium (Ge):**
+      ```
+      Atomic number: 32
+      Configuration: 1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p2
+      Valence electrons: 4
+      Holes: 4
+      ```
+
+      **Phosphorus (P):**
+      ```
+      Atomic number: 15
+      Configuration: 1s2 2s2 2p6 3s2 3p3
+      Valence electrons: 5
+      Holes: 3
+      ```
+
+      **Result:**
+      ```
+      Material Type: Tipo N (Exceso de electrones)
+      ```
+
+      **Properties:**
+      - N-type germanium semiconductor
+      - Excess electrons as charge carriers
+      - Lower band gap than silicon (0.66 eV vs 1.12 eV)
+      - Higher electron mobility than silicon
+
+      **Applications:**
+      - Early transistors (1940s-1960s)
+      - High-frequency devices
+      - Infrared detectors
+      - Modern high-speed electronics
+    </Accordion>
+
+    <Accordion title="Germanium + Boron → P-type">
+      **Input:**
+      - Element A (Host): 32 (Germanium)
+      - Element B (Dopant): 5 (Boron)
+
+      **Electron configurations:**
+
+      **Germanium (Ge):**
+      ```
+      Atomic number: 32
+      Configuration: 1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p2
+      Valence electrons: 4
+      Holes: 4
+      ```
+
+      **Boron (B):**
+      ```
+      Atomic number: 5
+      Configuration: 1s2 2s2 2p1
+      Valence electrons: 3
+      Holes: 5
+      ```
+
+      **Result:**
+      ```
+      Material Type: Tipo P (Exceso de huecos)
+      ```
+
+      **Properties:**
+      - P-type germanium semiconductor
+      - Excess holes as charge carriers
+      - Higher hole mobility than silicon
+      - More temperature sensitive than silicon
+
+      **Applications:**
+      - Point-contact transistors
+      - Radiation detectors
+      - Specialized applications requiring high mobility
+    </Accordion>
+
+    <Accordion title="Germanium + Germanium → Intrinsic">
+      **Input:**
+      - Element A (Host): 32 (Germanium)
+      - Element B (Dopant): 32 (Germanium)
+
+      **Electron configurations:**
+
+      **Germanium (Ge) - Host:**
+      ```
+      Atomic number: 32
+      Configuration: 1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p2
+      Valence electrons: 4
+      Holes: 4
+      ```
+
+      **Germanium (Ge) - Dopant:**
+      ```
+      Atomic number: 32
+      Configuration: 1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p2
+      Valence electrons: 4
+      Holes: 4
+      ```
+
+      **Result:**
+      ```
+      Material Type: Intrínseco (Aislante)
+      ```
+
+      **Properties:**
+      - Pure germanium semiconductor
+      - Small band gap (0.66 eV)
+      - Higher intrinsic carrier concentration than silicon
+      - More conductive than intrinsic silicon at room temperature
+
+      **Comparison with silicon:**
+      | Property | Germanium | Silicon |
+      |----------|-----------|--------|
+      | Band gap | 0.66 eV | 1.12 eV |
+      | Max temperature | ~85°C | ~150°C |
+      | Electron mobility | 3900 cm²/V·s | 1400 cm²/V·s |
+      | Historical use | 1940s-1960s | 1960s-present |
+    </Accordion>
+
+    <Accordion title="Germanium + Arsenic → N-type">
+      **Input:**
+      - Element A (Host): 32 (Germanium)
+      - Element B (Dopant): 33 (Arsenic)
+
+      **Electron configurations:**
+
+      **Germanium (Ge):**
+      ```
+      Atomic number: 32
+      Configuration: 1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p2
+      Valence electrons: 4
+      Holes: 4
+      ```
+
+      **Arsenic (As):**
+      ```
+      Atomic number: 33
+      Configuration: 1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p3
+      Valence electrons: 5
+      Holes: 3
+      ```
+
+      **Result:**
+      ```
+      Material Type: Tipo N (Exceso de electrones)
+      ```
+
+      **Properties:**
+      - N-type germanium with arsenic dopant
+      - Common dopant in germanium technology
+      - Similar atomic size to germanium (better lattice match than phosphorus)
+      - Lower ionization energy than phosphorus in germanium
+
+      **Applications:**
+      - Preferred N-type dopant for germanium devices
+      - Better solubility in germanium than phosphorus
+      - Used in modern germanium-based MOSFETs
+    </Accordion>
+  </AccordionGroup>
+</Accordion>
+
+## Understanding the calculation logic
+
+The application determines material type using this algorithm (from `src/utils/chemistry.js:40-48`):
+
+```javascript
+export const determineMaterial = (el1, el2) => {
+  const v1 = el1.valenceElectrons;
+  const v2 = el2.valenceElectrons;
+
+  if (v1 === 4 && v2 === 4) return "Intrínseco (Aislante)";
+  if ((v1 === 4 && v2 === 5) || (v1 === 5 && v2 === 4)) return "Tipo N (Exceso de electrones)";
+  if ((v1 === 4 && v2 === 3) || (v1 === 3 && v2 === 4)) return "Tipo P (Exceso de huecos)";
+  return "Ninguno de los anteriores";
+};
+```
+
+**Logic breakdown:**
+
+1. **Intrinsic:** Both elements have 4 valence electrons
+2. **N-type:** One element has 4, the other has 5 valence electrons
+3. **P-type:** One element has 4, the other has 3 valence electrons
+4. **Invalid:** Any other combination (e.g., 2+6, 3+3, 5+5)
+
+## Invalid combinations
+
+Not all element combinations produce valid semiconductors:
+
+<CodeGroup>
+```text Invalid: Both Group 13
+Input: B (5) + Al (13)
+Valence: 3 + 3
+Result: "Ninguno de los anteriores"
+Reason: No Group 14 host material
+```
+
+```text Invalid: Both Group 15
+Input: N (7) + P (15)
+Valence: 5 + 5
+Result: "Ninguno de los anteriores"
+Reason: Both are dopants, no semiconductor host
+```
+
+```text Invalid: Different groups
+Input: C (6) + O (8)
+Valence: 4 + 6
+Result: "Ninguno de los anteriores"
+Reason: Neither forms semiconductor structure
+```
+</CodeGroup>
+
+## Common dopants by group
+
+### Group 13 (P-type dopants)
+- **Boron (B):** Most common, small atomic radius
+- **Aluminium (Al):** Alternative dopant, larger radius
+- **Gallium (Ga):** Used in GaAs and other III-V semiconductors
+- **Indium (In):** Heavier dopant, special applications
+
+### Group 14 (Semiconductor hosts)
+- **Carbon (C):** Diamond semiconductors (wide band gap)
+- **Silicon (Si):** Most common, industry standard
+- **Germanium (Ge):** High mobility, specialized uses
+- **Tin (Sn):** Experimental semiconductor applications
+
+### Group 15 (N-type dopants)
+- **Nitrogen (N):** Limited use, small radius
+- **Phosphorus (P):** Most common for silicon
+- **Arsenic (As):** Preferred for germanium, used in silicon
+- **Antimony (Sb):** Heavy dopant, slow diffusion
+
+## Visualizations in the application
+
+When you run these examples in SemiCode Analyzer, you'll see:
+
+1. **Electron configuration diagrams:** Shows the shell structure for both elements
+2. **Energy band diagram:** Displays the position of the Fermi level
+   - N-type: Fermi level near conduction band (top 25%)
+   - P-type: Fermi level near valence band (bottom 75%)
+   - Intrinsic: Fermi level in the middle (50%)
+3. **Crystal lattice structure:** Visual representation of atom arrangement and dopant placement
+
+## Practical exercise
+
+Try these combinations in the application:
+
+1. Si (14) + P (15) → Verify N-type output
+2. Si (14) + B (5) → Verify P-type output
+3. Ge (32) + As (33) → Verify N-type output
+4. Si (14) + Ga (31) → Verify P-type output (Gallium: 4s2 4p1, 3 valence electrons)
+5. C (6) + Si (14) → Check the result (both have 4 valence electrons)
+
+## Further reading
+
+To learn more about semiconductor physics and doping:
+
+- **Electron configuration:** See the [calculation guide](/fundamentals/calculation)
+- **Material types:** See the [semiconductor types](/fundamentals/types)
+- **Periodic table data:** See the [periodic table reference](/resources/periodic-table)

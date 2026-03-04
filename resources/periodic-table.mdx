@@ -1,0 +1,247 @@
+---
+title: Periodic table data
+description: Understanding the periodic table JSON structure and how element data is used in SemiCode Analyzer
+---
+
+## Overview
+
+SemiCode Analyzer uses a comprehensive periodic table JSON file to provide detailed information about chemical elements. This data source enables accurate electron configuration calculations and semiconductor analysis.
+
+## Data source
+
+The periodic table data is sourced from [Bowserinator's Periodic Table JSON](https://github.com/Bowserinator/Periodic-Table-JSON) repository, which provides extensive information for all chemical elements in a structured JSON format.
+
+**Credit:** The periodic table JSON file was created by Bowserinator and is used under open source license.
+
+## JSON structure
+
+The periodic table data is stored in `/public/periodicTable.json` with the following structure:
+
+```json
+{
+  "elements": [
+    {
+      "name": "Silicon",
+      "symbol": "Si",
+      "number": 14,
+      "mass": 28.085,
+      "category": "metalloid",
+      "electron_configuration": "1s2 2s2 2p6 3s2 3p2",
+      "electron_configuration_semantic": "[Ne] 3s2 3p2",
+      "shells": [2, 8, 4],
+      "period": 3,
+      "group": 14,
+      "phase": "Solid",
+      "electronegativity_pauling": 1.9,
+      "electron_affinity": 134.0684,
+      "ionization_energies": [786.5, 1577.1, 3231.6, ...],
+      "density": 2.329,
+      "melt": 1687,
+      "boil": 3538,
+      "appearance": "crystalline, reflective with bluish-tinged faces",
+      "discovered_by": "Jöns Jacob Berzelius",
+      "named_by": "Thomas Thomson (chemist)",
+      "source": "https://en.wikipedia.org/wiki/Silicon",
+      "summary": "Silicon is a chemical element..."
+    }
+  ]
+}
+```
+
+## Key fields
+
+### Essential properties
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `number` | integer | Atomic number (number of protons) |
+| `symbol` | string | Chemical symbol (e.g., "Si", "Al") |
+| `name` | string | Full element name |
+| `mass` | number | Atomic mass in unified atomic mass units |
+| `category` | string | Element category (metalloid, metal, nonmetal, etc.) |
+
+### Electron configuration
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `electron_configuration` | string | Full electron configuration notation |
+| `electron_configuration_semantic` | string | Simplified noble gas notation |
+| `shells` | array | Electrons per shell (e.g., [2, 8, 4] for Si) |
+| `electron_affinity` | number | Electron affinity in kJ/mol |
+| `electronegativity_pauling` | number | Pauling electronegativity scale |
+| `ionization_energies` | array | Ionization energies for each electron |
+
+### Physical properties
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `phase` | string | Phase at room temperature (Solid, Liquid, Gas) |
+| `density` | number | Density in g/cm³ |
+| `melt` | number | Melting point in Kelvin |
+| `boil` | number | Boiling point in Kelvin |
+| `appearance` | string | Physical appearance description |
+
+### Metadata
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `period` | integer | Period (row) in periodic table |
+| `group` | integer | Group (column) in periodic table |
+| `block` | string | Block type (s, p, d, f) |
+| `discovered_by` | string | Name of discoverer |
+| `named_by` | string | Person who named the element |
+| `source` | string | Wikipedia URL for reference |
+
+## How the application uses this data
+
+The periodic table data is loaded and used throughout SemiCode Analyzer:
+
+### 1. Loading the data
+
+In `src/pages/index.astro:123-133`, the application fetches the periodic table on page load:
+
+```javascript
+let periodicTable = [];
+
+fetch("/periodicTable.json")
+  .then((res) => res.json())
+  .then((data) => {
+    periodicTable = data.elements;
+    console.log("Tabla periódica cargada:", periodicTable.length, "elementos");
+  })
+  .catch((err) => console.error("Error cargando tabla periódica:", err));
+```
+
+### 2. Element lookup
+
+When users input atomic numbers, the application looks up element names and symbols:
+
+```javascript
+const name1 = periodicTable.find((el) => el.number === z1)?.name || "Desconocido";
+const symbol1 = periodicTable.find((el) => el.number === z1)?.symbol || "X";
+```
+
+### 3. Electron configuration calculation
+
+While the JSON includes `electron_configuration` fields, the application calculates configurations dynamically using the `getElementData()` function in `src/utils/chemistry.js:1-38`. This ensures accurate valence electron counting for semiconductor analysis.
+
+### 4. Visualization
+
+Element data is used to render:
+- Atomic structure diagrams with correct electron shell distributions
+- Element names and symbols in the UI
+- Crystal lattice structures showing doping arrangements
+
+## Example elements used in semiconductor analysis
+
+### Silicon (Si)
+
+```json
+{
+  "number": 14,
+  "symbol": "Si",
+  "name": "Silicon",
+  "electron_configuration": "1s2 2s2 2p6 3s2 3p2",
+  "shells": [2, 8, 4],
+  "category": "metalloid",
+  "group": 14
+}
+```
+
+Silicon has 4 valence electrons, making it the primary semiconductor material.
+
+### Phosphorus (P)
+
+```json
+{
+  "number": 15,
+  "symbol": "P",
+  "name": "Phosphorus",
+  "electron_configuration": "1s2 2s2 2p6 3s2 3p3",
+  "shells": [2, 8, 5],
+  "category": "polyatomic nonmetal",
+  "group": 15
+}
+```
+
+Phosphorus has 5 valence electrons, used as an N-type dopant.
+
+### Boron (B)
+
+```json
+{
+  "number": 5,
+  "symbol": "B",
+  "name": "Boron",
+  "electron_configuration": "1s2 2s2 2p1",
+  "shells": [2, 3],
+  "category": "metalloid",
+  "group": 13
+}
+```
+
+Boron has 3 valence electrons, used as a P-type dopant.
+
+### Aluminium (Al)
+
+```json
+{
+  "number": 13,
+  "symbol": "Al",
+  "name": "Aluminium",
+  "electron_configuration": "1s2 2s2 2p6 3s2 3p1",
+  "shells": [2, 8, 3],
+  "category": "post-transition metal",
+  "group": 13
+}
+```
+
+Aluminium has 3 valence electrons, another P-type dopant option.
+
+### Germanium (Ge)
+
+```json
+{
+  "number": 32,
+  "symbol": "Ge",
+  "name": "Germanium",
+  "electron_configuration": "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p2",
+  "shells": [2, 8, 18, 4],
+  "category": "metalloid",
+  "group": 14
+}
+```
+
+Germanium has 4 valence electrons, alternative semiconductor material to silicon.
+
+## Accessing the source
+
+The original periodic table JSON repository can be found at:
+
+**GitHub:** [https://github.com/Bowserinator/Periodic-Table-JSON](https://github.com/Bowserinator/Periodic-Table-JSON)
+
+This repository includes:
+- Complete element data for all 118 elements
+- Multiple output formats (JSON, CSV, SQL)
+- Regular updates with new scientific data
+- Comprehensive documentation
+- Attribution requirements
+
+## Data completeness
+
+The JSON file includes 118 chemical elements with varying levels of detail:
+
+- **Complete data:** Elements 1-94 (Hydrogen to Plutonium)
+- **Partial data:** Elements 95-118 (synthetic elements with limited experimental data)
+- **Required fields:** All elements have `number`, `symbol`, `name`, and `electron_configuration`
+- **Optional fields:** Some elements may have `null` values for properties like `boil`, `melt`, or `appearance`
+
+## Performance considerations
+
+The periodic table JSON file is approximately 250 KB in size. The application loads it once on page initialization and caches it in memory for fast lookups during calculations.
+
+For optimal performance:
+- The file is served from the `/public` directory as a static asset
+- Element lookups use JavaScript's `Array.find()` method
+- No external API calls are required
+- Data remains available offline once loaded

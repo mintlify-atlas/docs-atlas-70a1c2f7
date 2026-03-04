@@ -1,0 +1,189 @@
+---
+title: Semiconductor types
+description: Understanding intrinsic, N-type, and P-type semiconductors based on valence electron configuration
+---
+
+## What are semiconductor types?
+
+Semiconductors are materials with electrical conductivity between conductors and insulators. Their behavior can be modified by introducing **dopant** atoms, creating three distinct types:
+
+- **Intrinsic semiconductors** — Pure materials with balanced charge carriers
+- **N-type semiconductors** — Materials with excess electrons (negative charge carriers)
+- **P-type semiconductors** — Materials with excess holes (positive charge carriers)
+
+## How SemiCode determines material type
+
+The classification is based on the **valence electron count** of the host and dopant elements:
+
+```javascript
+export const determineMaterial = (el1, el2) => {
+  const v1 = el1.valenceElectrons;
+  const v2 = el2.valenceElectrons;
+
+  if (v1 === 4 && v2 === 4) return "Intrínseco (Aislante)";
+  if ((v1 === 4 && v2 === 5) || (v1 === 5 && v2 === 4)) return "Tipo N (Exceso de electrones)";
+  if ((v1 === 4 && v2 === 3) || (v1 === 3 && v2 === 4)) return "Tipo P (Exceso de huecos)";
+  return "Ninguno de los anteriores";
+};
+```
+
+<Info>
+The function checks both orderings (host-dopant and dopant-host) to ensure correct classification regardless of input order.
+</Info>
+
+## Intrinsic (pure) semiconductors
+
+### Definition
+
+An intrinsic semiconductor is a pure material with **4 valence electrons** paired with another element that also has **4 valence electrons**.
+
+### Examples
+
+- **Silicon + Silicon** (14 + 14)
+- **Germanium + Germanium** (32 + 32)
+- **Silicon + Germanium** (14 + 32)
+
+### Properties
+
+- Each atom forms 4 covalent bonds with neighbors
+- Complete tetrahedral crystal structure
+- Equal numbers of electrons and holes
+- Low conductivity at room temperature
+- Conductivity increases with temperature
+
+<Note>
+Intrinsic semiconductors are labeled "Aislante" (Insulator) in the application because pure semiconductors have very low conductivity at room temperature.
+</Note>
+
+### Crystal structure
+
+In an intrinsic semiconductor:
+```
+ Si — Si — Si
+ |    |    |
+ Si — Si — Si
+ |    |    |
+ Si — Si — Si
+```
+
+Each atom shares electrons equally with its neighbors, forming a perfect lattice with no excess carriers.
+
+## N-type semiconductors
+
+### Definition
+
+An N-type semiconductor forms when a **4-valence-electron** element (like Silicon) is doped with a **5-valence-electron** element (like Phosphorus).
+
+### Examples
+
+- **Silicon + Phosphorus** (14 + 15) → N-type
+- **Silicon + Arsenic** (14 + 33) → N-type
+- **Germanium + Antimony** (32 + 51) → N-type
+
+### Properties
+
+- The dopant contributes **one extra electron** per atom
+- Excess electrons become free charge carriers
+- Increased electrical conductivity
+- Negative charge carriers (electrons) are majority carriers
+- Holes are minority carriers
+
+### Crystal structure
+
+```
+ Si — Si — Si
+ |    |    |
+ Si — P — Si  ← Phosphorus has 5 valence electrons
+ |   [e-]  |      One electron is free
+ Si — Si — Si
+```
+
+The extra electron from Phosphorus doesn't participate in bonding and becomes a mobile charge carrier.
+
+### Visualization in SemiCode
+
+In the lattice visualization:
+- The dopant atom is shown in **orange**
+- The free electron appears as a **pulsing red circle** (e⁻)
+- The Fermi level moves closer to the conduction band
+
+## P-type semiconductors
+
+### Definition
+
+A P-type semiconductor forms when a **4-valence-electron** element is doped with a **3-valence-electron** element (like Boron or Aluminum).
+
+### Examples
+
+- **Silicon + Boron** (14 + 5) → P-type
+- **Silicon + Aluminum** (14 + 13) → P-type
+- **Germanium + Gallium** (32 + 31) → P-type
+
+### Properties
+
+- The dopant has **one fewer electron** than needed for bonding
+- Creates a "hole" (absence of electron) in the lattice
+- Holes act as positive charge carriers
+- Increased electrical conductivity
+- Holes are majority carriers
+- Electrons are minority carriers
+
+### Crystal structure
+
+```
+ Si — Si — Si
+ |    |    |
+ Si — Al — Si  ← Aluminum has only 3 valence electrons
+ |   [h+]  |      One bond is incomplete (hole)
+ Si — Si — Si
+```
+
+The missing electron creates a hole that can move through the lattice as neighboring electrons fill the gap.
+
+### Visualization in SemiCode
+
+In the lattice visualization:
+- The dopant atom is shown in **orange**
+- The hole appears as a **hollow dashed circle** with h⁺ label
+- The Fermi level moves closer to the valence band
+
+## Comparison table
+
+| Property | Intrinsic | N-type | P-type |
+|----------|-----------|--------|--------|
+| **Dopant valence** | 4 | 5 | 3 |
+| **Majority carriers** | Equal e⁻ and h⁺ | Electrons (e⁻) | Holes (h⁺) |
+| **Fermi level** | Midgap | Near conduction band | Near valence band |
+| **Conductivity** | Low | High | High |
+| **Example** | Si + Si | Si + P | Si + B |
+| **Color (lattice)** | Blue only | Blue + Orange (with e⁻) | Blue + Orange (with h⁺) |
+
+## Invalid combinations
+
+Not all element pairs produce useful semiconductors. The function returns "Ninguno de los anteriores" (None of the above) for:
+
+- **Both elements have 3 valence electrons** (e.g., B + Al)
+- **Both elements have 5 valence electrons** (e.g., P + As)
+- **Elements with 1, 2, 6, 7, or 8 valence electrons**
+- **Combinations outside the 3-4-5 pattern**
+
+<Warning>
+Doping with elements outside group 13-15 (valence 3-5) typically doesn't produce functional semiconductors and may damage the crystal structure.
+</Warning>
+
+## Related concepts
+
+<CardGroup cols={2}>
+  <Card title="Electronic configuration" icon="atom-simple" href="/concepts/electronic-configuration">
+    Learn how valence electrons are determined from atomic structure
+  </Card>
+  <Card title="Doping" icon="flask" href="/concepts/doping">
+    Understand the process of adding dopant atoms to semiconductors
+  </Card>
+  <Card title="Crystal lattice" icon="grid" href="/features/crystal-lattice">
+    Visualize how dopants and charge carriers appear in the crystal structure
+  </Card>
+  <Card title="Energy bands" icon="chart-line" href="/features/energy-bands">
+    See how Fermi levels differ between semiconductor types
+  </Card>
+</CardGroup>

@@ -1,97 +1,178 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "SemiCode Analyzer Documentation"
+description: "Explore semiconductor properties and electronic configurations with interactive visualizations"
+mode: "custom"
 ---
 
-## Setting up
+<div className="relative overflow-hidden bg-gradient-to-br from-[#1c457f] via-[#648cb6] to-[#a2caea] dark:from-[#0f1117] dark:via-[#1c457f] dark:to-[#648cb6] py-20 px-4">
+  <div className="max-w-6xl mx-auto">
+    <div className="grid lg:grid-cols-12 gap-8 items-center">
+      <div className="lg:col-span-7 space-y-6">
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white dark:text-gray-100">
+          SemiCode Analyzer Documentation
+        </h1>
+        <p className="text-base sm:text-lg lg:text-xl text-white/90 dark:text-gray-300 max-w-2xl">
+          Master semiconductor analysis with interactive tools for electronic configurations, material type determination, and crystal structure visualization.
+        </p>
+        <div className="flex flex-wrap gap-3">
+          <a 
+            href="/quickstart" 
+            className="inline-flex items-center px-6 py-3 rounded-lg bg-white dark:bg-gray-100 text-[#1c457f] dark:text-[#1c457f] font-semibold hover:bg-gray-100 dark:hover:bg-white transition-colors no-underline"
+          >
+            Get Started
+          </a>
+          <a 
+            href="/concepts/electronic-configuration" 
+            className="inline-flex items-center px-6 py-3 rounded-lg border-2 border-white/30 bg-white/10 text-white dark:text-gray-100 font-semibold hover:bg-white/20 dark:hover:bg-white/20 transition-colors no-underline"
+          >
+            Learn Concepts
+          </a>
+        </div>
+      </div>
+      <div className="lg:col-span-5 flex justify-center">
+        <div className="w-64 h-64 bg-white/10 dark:bg-white/5 rounded-full border-4 border-white/20 flex items-center justify-center backdrop-blur-sm">
+          <div className="text-center">
+            <div className="text-6xl font-bold text-white dark:text-gray-100">Si</div>
+            <div className="text-sm text-white/80 dark:text-gray-400 mt-2">Interactive Analysis</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-Get your documentation site up and running in minutes.
+<div className="mt-16 mb-16 max-w-5xl mx-auto px-6">
+  <div className="mb-12">
+    <h2 className="text-2xl sm:text-3xl font-semibold text-gray-900 dark:text-white mb-3">Quick start</h2>
+    <p className="text-base text-gray-600 dark:text-gray-400">Get up and running with SemiCode Analyzer in minutes</p>
+  </div>
 
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
+  <Steps>
+    <Step title="Enter atomic numbers">
+      Input the atomic number (Z) for your host element and dopant element. For example, enter **14** for Silicon (Si) and **13** for Aluminum (Al).
+      
+      <Note>
+        Atomic numbers range from 1 (Hydrogen) to 118 (Oganesson). The tool automatically calculates electronic configurations using the Aufbau principle.
+      </Note>
+    </Step>
+    
+    <Step title="Analyze semiconductor type">
+      Click **Calcular Material** to determine the resulting semiconductor type. The tool evaluates valence electrons and classifies the material as:
+      - **Intrínseco (Aislante)** — Pure semiconductor with 4 valence electrons
+      - **Tipo N** — N-type with excess electrons (5 valence electrons in dopant)
+      - **Tipo P** — P-type with excess holes (3 valence electrons in dopant)
+    </Step>
+    
+    <Step title="Explore visualizations">
+      View interactive atomic structures, crystal lattice diagrams, and energy band diagrams. Toggle between different visualization modes to understand semiconductor behavior at the atomic level.
+    </Step>
+  </Steps>
+</div>
 
-## Make it yours
+<div className="mt-16 mb-16 max-w-5xl mx-auto px-6">
+  <div className="mb-12">
+    <h2 className="text-2xl sm:text-3xl font-semibold text-gray-900 dark:text-white mb-3">Explore by feature</h2>
+    <p className="text-base text-gray-600 dark:text-gray-400">Discover the powerful capabilities of SemiCode Analyzer</p>
+  </div>
 
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
-  </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
-  </Card>
+  <CardGroup cols={2}>
     <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
-  </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
-  </Card>
-</Columns>
+      title="Configuration calculator"
+      icon="atom"
+      href="/features/configuration-calculator"
+    >
+      Calculate electronic configurations and valence electrons for any element based on atomic number
+    </Card>
+    <Card
+      title="Atom visualization"
+      icon="circle-nodes"
+      href="/features/atom-visualization"
+    >
+      View interactive atomic structure diagrams with electron shells and orbitals
+    </Card>
+    <Card
+      title="Crystal lattice"
+      icon="grid"
+      href="/features/crystal-lattice"
+    >
+      Explore crystal structure with dopant atoms, free electrons, and holes
+    </Card>
+    <Card
+      title="Energy bands"
+      icon="chart-line"
+      href="/features/energy-bands"
+    >
+      Visualize conduction bands, valence bands, and Fermi level positioning
+    </Card>
+  </CardGroup>
+</div>
 
-## Create beautiful pages
+<div className="mt-16 mb-16 max-w-5xl mx-auto px-6">
+  <div className="mb-12">
+    <h2 className="text-2xl sm:text-3xl font-semibold text-gray-900 dark:text-white mb-3">Core concepts</h2>
+    <p className="text-base text-gray-600 dark:text-gray-400">Build a solid foundation in semiconductor physics</p>
+  </div>
 
-Everything you need to create world-class documentation.
+  <CardGroup cols={3}>
+    <Card
+      title="Electronic configuration"
+      icon="atom-simple"
+      href="/concepts/electronic-configuration"
+    >
+      Learn how electrons fill atomic orbitals
+    </Card>
+    <Card
+      title="Semiconductor types"
+      icon="microchip"
+      href="/concepts/semiconductor-types"
+    >
+      Understand intrinsic, N-type, and P-type materials
+    </Card>
+    <Card
+      title="Doping"
+      icon="flask"
+      href="/concepts/doping"
+    >
+      Discover how impurities alter semiconductor properties
+    </Card>
+  </CardGroup>
+</div>
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+<div className="mt-16 mb-16 max-w-5xl mx-auto px-6">
+  <div className="mb-12">
+    <h2 className="text-2xl sm:text-3xl font-semibold text-gray-900 dark:text-white mb-3">Developer resources</h2>
+    <p className="text-base text-gray-600 dark:text-gray-400">Integrate SemiCode functionality into your own projects</p>
+  </div>
 
-## Need inspiration?
+  <CardGroup cols={2}>
+    <Card
+      title="Chemistry functions"
+      icon="flask-vial"
+      href="/api/chemistry-functions"
+    >
+      Core calculation functions for electronic configurations and material determination
+    </Card>
+    <Card
+      title="Visualization functions"
+      icon="palette"
+      href="/api/visualization-functions"
+    >
+      Rendering functions for atoms, lattices, and energy diagrams
+    </Card>
+  </CardGroup>
+</div>
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+<div className="mt-20 mb-16 max-w-5xl mx-auto px-6">
+  <div className="bg-gradient-to-r from-[#1c457f] to-[#648cb6] dark:from-[#1a1d27] dark:to-[#242838] dark:border dark:border-[#27272a] rounded-2xl p-8 sm:p-12 text-center">
+    <h2 className="text-2xl sm:text-3xl font-bold text-white dark:text-gray-100 mb-4">Ready to explore semiconductors?</h2>
+    <p className="text-base sm:text-lg text-white/90 dark:text-gray-300 mb-6 max-w-2xl mx-auto">
+      Start analyzing electronic configurations and semiconductor properties with interactive visualizations.
+    </p>
+    <a 
+      href="/quickstart" 
+      className="inline-flex items-center px-6 py-3 rounded-lg bg-white dark:bg-gray-100 text-[#1c457f] dark:text-[#1c457f] font-semibold hover:bg-gray-100 dark:hover:bg-white transition-colors no-underline"
+    >
+      Get Started Now
+    </a>
+  </div>
+</div>

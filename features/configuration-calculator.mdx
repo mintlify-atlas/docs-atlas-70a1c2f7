@@ -1,0 +1,112 @@
+---
+title: Electronic configuration calculator
+description: Calculate electron configurations and valence electrons for any element using the Aufbau principle
+---
+
+The configuration calculator determines the electronic structure of atoms by distributing electrons across orbitals according to the Aufbau filling order.
+
+## How it works
+
+The calculator uses the `getElementData()` function to compute electron configurations based on atomic number (Z). It fills orbitals sequentially following the energy-level hierarchy:
+
+```javascript chemistry.js
+const sequence = [
+  { n: "1s", max: 2 }, { n: "2s", max: 2 }, { n: "2p", max: 6 },
+  { n: "3s", max: 2 }, { n: "3p", max: 6 }, { n: "4s", max: 2 },
+  { n: "3d", max: 10 }, { n: "4p", max: 6 }, { n: "5s", max: 2 },
+  { n: "4d", max: 10 }, { n: "5p", max: 6 }, { n: "6s", max: 2 },
+  { n: "4f", max: 14 }, { n: "5d", max: 10 }, { n: "6p", max: 6 },
+  { n: "7s", max: 2 }, { n: "5f", max: 14 }, { n: "6d", max: 10 },
+  { n: "7p", max: 6 }
+];
+```
+
+### Orbital filling logic
+
+The algorithm processes each orbital subshell in the sequence defined above:
+
+1. Determines how many electrons to place in the current orbital (minimum of remaining electrons and orbital capacity)
+2. Adds the orbital and electron count to the configuration array
+3. Tracks the highest principal quantum number to identify valence electrons
+4. Continues until all electrons are distributed
+
+```javascript chemistry.js
+for (let sub of sequence) {
+  if (remaining <= 0) break;
+  let count = Math.min(remaining, sub.max);
+  config.push({ label: sub.n, electrons: count });
+  
+  let currentLevel = parseInt(sub.n[0]);
+  if (currentLevel > lastLevel) {
+    lastLevel = currentLevel;
+    valenceElectrons = count;
+  } else if (currentLevel === lastLevel) {
+    valenceElectrons += count;
+  }
+  remaining -= count;
+}
+```
+
+## Return values
+
+The `getElementData()` function returns an object containing:
+
+- `z` — Atomic number
+- `configString` — Full electron configuration (e.g., "1s2 2s2 2p6 3s2 3p2")
+- `valenceElectrons` — Number of electrons in the outermost shell
+- `holes` — Number of holes calculated as 8 - valenceElectrons
+
+## Example outputs
+
+<CodeGroup>
+```javascript Silicon (Z=14)
+{
+  z: 14,
+  configString: "1s2 2s2 2p6 3s2 3p2",
+  valenceElectrons: 4,
+  holes: 4
+}
+```
+
+```javascript Phosphorus (Z=15)
+{
+  z: 15,
+  configString: "1s2 2s2 2p6 3s2 3p3",
+  valenceElectrons: 5,
+  holes: 3
+}
+```
+
+```javascript Aluminum (Z=13)
+{
+  z: 13,
+  configString: "1s2 2s2 2p6 3s2 3p1",
+  valenceElectrons: 3,
+  holes: 5
+}
+```
+</CodeGroup>
+
+## Valence electron calculation
+
+Valence electrons are identified by tracking the highest principal quantum number (n) encountered during filling:
+
+- When a new shell is encountered (higher n), the valence count resets to the electrons in that shell
+- Electrons added to the same shell level accumulate in the valence count
+- This approach correctly handles transition metals where d-orbitals fill after the next s-orbital
+
+<Note>
+The valence electron count is critical for determining semiconductor behavior. Elements with 3, 4, or 5 valence electrons form the basis of P-type, intrinsic, and N-type semiconductors respectively.
+</Note>
+
+## Material type determination
+
+The `determineMaterial()` function uses valence electron counts to classify semiconductor combinations:
+
+```javascript chemistry.js
+if (v1 === 4 && v2 === 4) return "Intrínseco (Aislante)";
+if ((v1 === 4 && v2 === 5) || (v1 === 5 && v2 === 4)) return "Tipo N (Exceso de electrones)";
+if ((v1 === 4 && v2 === 3) || (v1 === 3 && v2 === 4)) return "Tipo P (Exceso de huecos)";
+```
+
+This logic determines whether doping creates an N-type (electron donor) or P-type (hole donor) semiconductor.

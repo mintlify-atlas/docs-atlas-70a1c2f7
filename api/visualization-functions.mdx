@@ -1,0 +1,128 @@
+---
+title: Visualization functions
+description: Functions for rendering atomic models and crystal lattice structures in the DOM
+---
+
+The visualizers module provides functions that generate SVG-based visual representations of atomic structures and semiconductor crystal lattices. These functions manipulate the DOM directly to render interactive visualizations.
+
+## renderAtom
+
+Renders an atomic model visualization showing electron shells and their electron distribution for a given element.
+
+```javascript
+import { renderAtom } from './utils/visualizers.js';
+
+// Render a silicon atom in the container with id "atom-container"
+renderAtom('atom-container', 14, 'Si');
+```
+
+This function will populate the target container with:
+- A title showing the element symbol and atomic number
+- An SVG visualization with a nucleus (labeled with the element symbol)
+- Orbital rings representing electron shells
+- Individual electrons positioned around each shell
+
+### Parameters
+
+<ParamField path="containerId" type="string" required>
+  The DOM element ID where the atom visualization will be rendered. The function will clear any existing content in this container.
+</ParamField>
+
+<ParamField path="atomicNumber" type="number" required>
+  The atomic number (Z) of the element to visualize. This determines the electron configuration.
+</ParamField>
+
+<ParamField path="symbol" type="string" required>
+  The chemical symbol of the element (e.g., "Si", "P", "B"). This is displayed in the nucleus and title.
+</ParamField>
+
+### Side effects
+
+- Modifies the `innerHTML` of the target DOM element
+- Returns `undefined` if the container element is not found
+- Uses Tailwind CSS classes for styling (requires Tailwind CSS to be available)
+- Generates an SVG with dynamically calculated viewBox based on the number of electron shells
+
+### Example usage
+
+```javascript
+// Render different atoms
+renderAtom('silicon-viz', 14, 'Si');     // Silicon with 3 shells
+renderAtom('phosphorus-viz', 15, 'P');   // Phosphorus with 3 shells
+renderAtom('boron-viz', 5, 'B');         // Boron with 2 shells
+```
+
+## renderLattice
+
+Renders a crystal lattice structure visualization showing a semiconductor material with optional dopant atoms.
+
+```javascript
+import { renderLattice } from './utils/visualizers.js';
+
+// Render an N-type semiconductor (Silicon doped with Phosphorus)
+renderLattice('lattice-container', 14, 15, 'Tipo N (Exceso de electrones)');
+```
+
+This function will populate the target container with:
+- A title indicating the material type
+- A 3×3 grid representing the crystal lattice
+- Host atoms (shown in blue)
+- A central dopant atom (shown in orange) if the material is not intrinsic
+- Visual indicators for excess electrons (N-type) or holes (P-type)
+- A descriptive caption explaining the doping type
+
+### Parameters
+
+<ParamField path="containerId" type="string" required>
+  The DOM element ID where the lattice visualization will be rendered. The function will clear any existing content in this container.
+</ParamField>
+
+<ParamField path="hostZ" type="number" required>
+  The atomic number of the host material (typically Silicon, Z=14)
+</ParamField>
+
+<ParamField path="dopantZ" type="number" required>
+  The atomic number of the dopant element (e.g., Phosphorus Z=15 for N-type, Boron Z=5 for P-type)
+</ParamField>
+
+<ParamField path="materialType" type="string" required>
+  The semiconductor material classification. Expected values:
+  - `"Intrínseco (Aislante)"` — Pure semiconductor with no dopant visualization
+  - `"Tipo N (Exceso de electrones)"` — N-type with electron visualization
+  - `"Tipo P (Exceso de huecos)"` — P-type with hole visualization
+  
+  This should typically be the return value from `determineMaterial()`.
+</ParamField>
+
+### Side effects
+
+- Modifies the `innerHTML` of the target DOM element
+- Returns `undefined` if the container element is not found
+- Uses Tailwind CSS classes for styling (requires Tailwind CSS to be available)
+- Generates an SVG showing a 3×3 atom grid with connecting bonds
+- The center atom is replaced with the dopant unless the material is intrinsic
+
+### Example usage
+
+```javascript
+import { getElementData, determineMaterial } from './utils/chemistry.js';
+import { renderLattice } from './utils/visualizers.js';
+
+// Create an N-type semiconductor visualization
+const silicon = getElementData(14);
+const phosphorus = getElementData(15);
+const materialType = determineMaterial(silicon, phosphorus);
+
+renderLattice('n-type-lattice', 14, 15, materialType);
+
+// Create a P-type semiconductor visualization
+const boron = getElementData(5);
+const pTypeMaterial = determineMaterial(silicon, boron);
+
+renderLattice('p-type-lattice', 14, 5, pTypeMaterial);
+
+// Create an intrinsic semiconductor visualization
+const intrinsicType = determineMaterial(silicon, silicon);
+
+renderLattice('intrinsic-lattice', 14, 14, intrinsicType);
+```

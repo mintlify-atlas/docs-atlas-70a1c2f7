@@ -1,0 +1,178 @@
+---
+title: Energy band diagrams
+description: Visualize valence bands, conduction bands, and Fermi level positioning for different semiconductor types
+---
+
+The energy band diagram displays the electronic structure of semiconductors showing how doping affects the Fermi level position relative to valence and conduction bands.
+
+## Band diagram structure
+
+The diagram consists of three key energy levels rendered in the UI:
+
+```astro index.astro
+<div class="relative h-64 w-full flex flex-col justify-between items-center py-4">
+  <div class="w-3/4 h-12 bg-blue-500/20 border-b-2 border-blue-400 flex items-center justify-center">
+    <span class="text-[10px] text-blue-300">Banda de Conducción (E_c)</span>
+  </div>
+
+  <div id="fermiLine" class="w-full border-t border-dashed border-yellow-400 absolute top-1/2 transition-all duration-500">
+    <span class="text-[8px] bg-slate-900 px-1 text-yellow-400 ml-2">Nivel de Fermi (E_f)</span>
+  </div>
+
+  <div class="w-3/4 h-12 bg-orange-500/20 border-t-2 border-orange-400 flex items-center justify-center">
+    <span class="text-[10px] text-orange-300">Banda de Valencia (E_v)</span>
+  </div>
+</div>
+```
+
+### Conduction band (E_c)
+
+The top region represents the conduction band where free electrons can move:
+- Blue color scheme (`bg-blue-500/20`, `border-blue-400`)
+- Positioned at the top of the diagram (highest energy level)
+- Electrons in this band contribute to electrical conductivity
+
+### Valence band (E_v)
+
+The bottom region represents the valence band where electrons are bound to atoms:
+- Orange color scheme (`bg-orange-500/20`, `border-orange-400`)
+- Positioned at the bottom of the diagram (lowest energy level)
+- Holes in this band can also contribute to conductivity
+
+### Band gap
+
+The space between conduction and valence bands represents the forbidden energy gap where no electron states exist in a perfect crystal.
+
+## Fermi level positioning
+
+The Fermi level (E_f) indicates the energy at which electron occupation probability is 50%. Its position changes based on material type:
+
+```javascript index.astro
+const fermiLine = document.getElementById("fermiLine");
+
+if (material.includes("Tipo N")) {
+  fermiLine.style.top = "25%";
+  fermiLine.querySelector("span").innerText = "Nivel de Fermi (E_f) - Cerca de E_c";
+} else if (material.includes("Tipo P")) {
+  fermiLine.style.top = "75%";
+  fermiLine.querySelector("span").innerText = "Nivel de Fermi (E_f) - Cerca de E_v";
+} else {
+  fermiLine.style.top = "50%";
+  fermiLine.querySelector("span").innerText = "Nivel de Fermi (E_f) - Intrínseco";
+}
+```
+
+### N-type semiconductors
+
+**Position**: `top: 25%` (near conduction band)
+
+```javascript index.astro
+fermiLine.style.top = "25%";
+fermiLine.querySelector("span").innerText = "Nivel de Fermi (E_f) - Cerca de E_c";
+```
+
+In N-type materials, donor atoms contribute extra electrons, increasing the probability of electron occupation near the conduction band. The Fermi level shifts upward closer to E_c.
+
+<Note>
+N-type doping occurs when a pentavalent element (5 valence electrons) like phosphorus replaces silicon (4 valence electrons) in the crystal lattice.
+</Note>
+
+### P-type semiconductors
+
+**Position**: `top: 75%` (near valence band)
+
+```javascript index.astro
+fermiLine.style.top = "75%";
+fermiLine.querySelector("span").innerText = "Nivel de Fermi (E_f) - Cerca de E_v";
+```
+
+In P-type materials, acceptor atoms create holes by having fewer electrons, increasing the probability of hole occupation near the valence band. The Fermi level shifts downward closer to E_v.
+
+<Note>
+P-type doping occurs when a trivalent element (3 valence electrons) like aluminum replaces silicon in the crystal lattice.
+</Note>
+
+### Intrinsic semiconductors
+
+**Position**: `top: 50%` (midgap)
+
+```javascript index.astro
+fermiLine.style.top = "50%";
+fermiLine.querySelector("span").innerText = "Nivel de Fermi (E_f) - Intrínseco";
+```
+
+In pure (intrinsic) semiconductors with no doping, the Fermi level sits at the middle of the band gap. Electron and hole concentrations are equal.
+
+## Dynamic transitions
+
+The Fermi level position animates smoothly when material type changes:
+
+```astro index.astro
+<div id="fermiLine" class="... transition-all duration-500">
+```
+
+The `transition-all duration-500` classes create a 500ms animation when the `top` style property changes, providing visual feedback as users select different dopant combinations.
+
+## Visual styling
+
+<CodeGroup>
+```css Conduction band
+.bg-blue-500/20      /* Light blue background with 20% opacity */
+.border-b-2          /* 2px bottom border */
+.border-blue-400     /* Medium blue border */
+```
+
+```css Fermi level
+.border-t            /* Top border */
+.border-dashed       /* Dashed line style */
+.border-yellow-400   /* Yellow color for visibility */
+.absolute            /* Absolute positioning for dynamic placement */
+```
+
+```css Valence band
+.bg-orange-500/20    /* Light orange background with 20% opacity */
+.border-t-2          /* 2px top border */
+.border-orange-400   /* Medium orange border */
+```
+</CodeGroup>
+
+## Physical interpretation
+
+The energy band diagram visualizes fundamental semiconductor physics:
+
+### Carrier concentration
+
+- **N-type**: Fermi level near E_c → high electron concentration in conduction band
+- **P-type**: Fermi level near E_v → high hole concentration in valence band
+- **Intrinsic**: Fermi level at midgap → equal electron and hole concentrations
+
+### Conductivity mechanism
+
+The relative position of E_f determines the dominant charge carriers:
+
+<Tip>
+When E_f is closer to E_c, electrons are the majority carriers. When E_f is closer to E_v, holes are the majority carriers.
+</Tip>
+
+### Temperature effects
+
+While not animated in the current implementation, in real semiconductors:
+- Higher temperatures increase intrinsic carrier concentration
+- E_f shifts slightly toward midgap as temperature increases
+- At very high temperatures, intrinsic carriers can dominate over dopant-contributed carriers
+
+## Integration with material determination
+
+The band diagram updates automatically when the user calculates a new material:
+
+```javascript index.astro
+const material = determineMaterial(el1, el2);
+
+// Update Fermi level based on material type
+if (material.includes("Tipo N")) {
+  fermiLine.style.top = "25%";
+  // ...
+}
+```
+
+The `determineMaterial()` function analyzes valence electrons (see [configuration-calculator](/features/configuration-calculator)) to classify the semiconductor, which then drives the Fermi level visualization.

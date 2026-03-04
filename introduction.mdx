@@ -1,0 +1,83 @@
+---
+title: Introduction
+description: Learn about SemiCode Analyzer, a web application for analyzing semiconductor properties and electronic configurations
+---
+
+SemiCode Analyzer is an interactive web application built with Astro that calculates electronic configurations and determines semiconductor types based on atomic doping combinations.
+
+## What is SemiCode Analyzer?
+
+SemiCode Analyzer helps you understand how doping affects semiconductor behavior by:
+
+- Calculating electronic configurations for elements based on their atomic numbers
+- Determining valence electrons and electron holes in the outermost energy level
+- Analyzing the combination of two elements to classify the resulting material type
+- Providing interactive visualizations of atomic structures, crystal lattices, and energy band diagrams
+
+The application implements the Aufbau principle to calculate electron configurations following the sequence: 1s, 2s, 2p, 3s, 3p, 4s, 3d, 4p, 5s, and so on.
+
+## Key features
+
+### Electronic configuration calculator
+
+Enter an atomic number (Z) and instantly see the complete electronic configuration. The calculator determines:
+
+- Full orbital notation (e.g., "1s2 2s2 2p6 3s2 3p2" for Silicon)
+- Number of valence electrons in the outermost shell
+- Number of electron holes (8 minus valence electrons)
+
+### Semiconductor type determination
+
+Combine two elements (host and dopant) to determine the material type:
+
+- **Intrinsic (Insulator)**: Both elements have 4 valence electrons (e.g., Si + Ge)
+- **N-type**: Host has 4 valence electrons, dopant has 5 (e.g., Si + P) — excess electrons
+- **P-type**: Host has 4 valence electrons, dopant has 3 (e.g., Si + Al) — excess holes
+- **None**: Combinations that don't produce standard semiconductor behavior
+
+```javascript
+export const determineMaterial = (el1, el2) => {
+  const v1 = el1.valenceElectrons;
+  const v2 = el2.valenceElectrons;
+
+  if (v1 === 4 && v2 === 4) return "Intrínseco (Aislante)";
+  if ((v1 === 4 && v2 === 5) || (v1 === 5 && v2 === 4)) return "Tipo N (Exceso de electrones)";
+  if ((v1 === 4 && v2 === 3) || (v1 === 3 && v2 === 4)) return "Tipo P (Exceso de huecos)";
+  return "Ninguno de los anteriores";
+};
+```
+
+### Interactive visualizations
+
+The application renders three types of visualizations:
+
+1. **Atomic diagrams**: Show electron shells and electron distribution for each element
+2. **Crystal lattice structure**: Display the 3x3 grid showing host atoms and dopant placement with free electrons (N-type) or holes (P-type)
+3. **Energy band diagrams**: Illustrate conduction band, valence band, and Fermi level position based on material type
+
+<Note>
+The Fermi level shifts closer to the conduction band (E_c) for N-type semiconductors and closer to the valence band (E_v) for P-type semiconductors.
+</Note>
+
+## Who is this for?
+
+SemiCode Analyzer is designed for:
+
+- **Students** studying electronic circuits, solid-state physics, or materials science
+- **Educators** teaching semiconductor physics and doping concepts
+- **Hobbyists** exploring chemistry and electronics fundamentals
+- **Developers** learning how to build scientific visualization tools with modern web frameworks
+
+## Technology stack
+
+The application is built with:
+
+- **Astro 5.x**: Static site generator with island architecture
+- **Tailwind CSS 4.x**: Utility-first CSS framework for styling
+- **Vanilla JavaScript**: Core calculation and visualization logic
+- **SVG**: Vector graphics for atomic and lattice visualizations
+- **Periodic Table JSON**: Element data sourced from [Bowserinator's Periodic Table JSON](https://github.com/Bowserinator/Periodic-Table-JSON)
+
+## Project background
+
+This project was created as an academic assignment for the Electronic Circuits course at Benemérita Universidad Autónoma de Puebla (BUAP) by Bryan A. Borges, supervised by Professor Daniel Sánchez Treviño.

@@ -1,0 +1,139 @@
+---
+title: Chemistry functions
+description: Utility functions for electron configuration and semiconductor material analysis
+---
+
+The chemistry module provides functions for calculating electron configurations, determining valence electrons, and identifying semiconductor material types based on element properties.
+
+## getElementData
+
+Calculates the electron configuration and valence properties for an element given its atomic number.
+
+```javascript
+import { getElementData } from './utils/chemistry.js';
+
+const silicon = getElementData(14);
+console.log(silicon);
+// {
+//   z: 14,
+//   configString: "1s2 2s2 2p6 3s2 3p2",
+//   valenceElectrons: 4,
+//   holes: 4
+// }
+```
+
+### Parameters
+
+<ParamField path="z" type="number" required>
+  The atomic number of the element (number of protons/electrons)
+</ParamField>
+
+### Returns
+
+<ResponseField name="z" type="number">
+  The atomic number that was passed in
+</ResponseField>
+
+<ResponseField name="configString" type="string">
+  The electron configuration in standard notation (e.g., "1s2 2s2 2p6 3s2 3p2")
+</ResponseField>
+
+<ResponseField name="valenceElectrons" type="number">
+  The number of electrons in the outermost energy level
+</ResponseField>
+
+<ResponseField name="holes" type="number">
+  The number of holes in the valence shell, calculated as `8 - valenceElectrons`
+</ResponseField>
+
+## determineMaterial
+
+Determines the semiconductor material type based on the valence electron properties of two elements (host and dopant).
+
+```javascript
+import { getElementData, determineMaterial } from './utils/chemistry.js';
+
+const silicon = getElementData(14);  // 4 valence electrons
+const phosphorus = getElementData(15);  // 5 valence electrons
+
+const materialType = determineMaterial(silicon, phosphorus);
+console.log(materialType);
+// "Tipo N (Exceso de electrones)"
+```
+
+### Parameters
+
+<ParamField path="el1" type="object" required>
+  Element data object containing at minimum a `valenceElectrons` property (typically from `getElementData`)
+</ParamField>
+
+<ParamField path="el2" type="object" required>
+  Element data object containing at minimum a `valenceElectrons` property (typically from `getElementData`)
+</ParamField>
+
+### Returns
+
+Returns a string describing the semiconductor material type:
+
+- `"Intrínseco (Aislante)"` — Both elements have 4 valence electrons (e.g., Si-Si)
+- `"Tipo N (Exceso de electrones)"` — One element has 4 and the other has 5 valence electrons (e.g., Si-P)
+- `"Tipo P (Exceso de huecos)"` — One element has 4 and the other has 3 valence electrons (e.g., Si-B)
+- `"Ninguno de los anteriores"` — Does not match standard semiconductor doping patterns
+
+## getElectronsPerLevel
+
+Calculates the distribution of electrons across energy levels (shells) for an element.
+
+```javascript
+import { getElectronsPerLevel } from './utils/chemistry.js';
+
+const distribution = getElectronsPerLevel(14);
+console.log(distribution);
+// {
+//   1: 2,
+//   2: 8,
+//   3: 4,
+//   4: 0,
+//   5: 0,
+//   6: 0,
+//   7: 0
+// }
+```
+
+### Parameters
+
+<ParamField path="z" type="number" required>
+  The atomic number of the element
+</ParamField>
+
+### Returns
+
+Returns an object mapping energy level numbers (1-7) to the number of electrons in that level.
+
+<ResponseField name="1" type="number">
+  Number of electrons in the first energy level (K shell)
+</ResponseField>
+
+<ResponseField name="2" type="number">
+  Number of electrons in the second energy level (L shell)
+</ResponseField>
+
+<ResponseField name="3" type="number">
+  Number of electrons in the third energy level (M shell)
+</ResponseField>
+
+<ResponseField name="4" type="number">
+  Number of electrons in the fourth energy level (N shell)
+</ResponseField>
+
+<ResponseField name="5" type="number">
+  Number of electrons in the fifth energy level (O shell)
+</ResponseField>
+
+<ResponseField name="6" type="number">
+  Number of electrons in the sixth energy level (P shell)
+</ResponseField>
+
+<ResponseField name="7" type="number">
+  Number of electrons in the seventh energy level (Q shell)
+</ResponseField>
