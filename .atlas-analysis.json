@@ -1,0 +1,65 @@
+{
+  "projectType": "frontend",
+  "projectName": "SemiCode Analyzer",
+  "projectDescription": "An interactive web tool for analyzing semiconductor properties and electronic configurations of chemical elements",
+  "theme": "palm",
+  "primaryColor": "#1c457f",
+  "lightColor": "#a2caea",
+  "darkColor": "#648cb6",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Get Started",
+        "pages": [
+          "introduction",
+          "quickstart"
+        ]
+      },
+      {
+        "group": "Core Concepts",
+        "pages": [
+          "concepts/electronic-configuration",
+          "concepts/semiconductor-types",
+          "concepts/doping"
+        ]
+      },
+      {
+        "group": "Features",
+        "pages": [
+          "features/configuration-calculator",
+          "features/atom-visualization",
+          "features/crystal-lattice",
+          "features/energy-bands"
+        ]
+      },
+      {
+        "group": "API Reference",
+        "pages": [
+          "api/chemistry-functions",
+          "api/visualization-functions"
+        ]
+      },
+      {
+        "group": "Resources",
+        "pages": [
+          "resources/periodic-table",
+          "resources/examples"
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Electronic configuration calculator for any element",
+    "Semiconductor type determination (Intrinsic, N-type, P-type)",
+    "Interactive atomic structure visualization",
+    "Crystal lattice structure rendering with dopant atoms",
+    "Energy band diagram display with Fermi level positioning"
+  ],
+  "publicApiSurface": [
+    "getElementData(z)",
+    "determineMaterial(el1, el2)",
+    "getElectronsPerLevel(z)",
+    "renderAtom(containerId, atomicNumber, symbol)",
+    "renderLattice(containerId, hostZ, dopantZ, materialType)"
+  ]
+}
